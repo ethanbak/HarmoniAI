@@ -1,0 +1,23 @@
+document.getElementById("musicForm").onsubmit = async function (event) {
+    event.preventDefault();
+    
+    const mood = document.getElementById("mood").value;
+    
+    const response = await fetch('/generate-music', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ mood: mood })
+    });
+    
+    const data = await response.json();
+    const audioPlayer = document.getElementById("audioPlayer");
+    
+    if (data.audio_url) {
+        audioPlayer.src = data.audio_url;
+        audioPlayer.play();
+    } else {
+        alert('Failed to generate music. Try again.');
+    }
+};
